@@ -8,6 +8,7 @@ const {MONGODB_URI} = require('./config');
 
 require('./models/user_model');
 
+app.use(express.json());
 app.use((require('./routes/authntentication')));
 
 mongoose.connect(MONGODB_URI);
