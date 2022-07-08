@@ -6,6 +6,10 @@ const PORT=4000;
 
 const {MONGODB_URI} = require('./config');
 
+require('./models/user_model');
+
+app.use((require('./routes/authntentication')));
+
 mongoose.connect(MONGODB_URI);
 
 mongoose.connection.on('connected', ()=> {
