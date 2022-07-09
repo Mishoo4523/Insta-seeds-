@@ -1,6 +1,6 @@
 const express = require('express');
 const app=express();
-const mongoose=require('mongoose')
+const mongoose=require('mongoose');
 const PORT=4000;
 
 
@@ -9,7 +9,7 @@ const {MONGODB_URI} = require('./config');
 require('./models/user_model');
 
 app.use(express.json());
-app.use((require('./routes/authntentication')));
+app.use(require('./routes/authentication'));
 
 mongoose.connect(MONGODB_URI);
 
@@ -27,6 +27,6 @@ app.get('/', ( req,res)=>{
 });
 
 app.listen(PORT, ()=> {
-    console.log("server Started");
+    console.log("server Started"); 
 
 });
