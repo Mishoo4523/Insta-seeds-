@@ -6,11 +6,19 @@ const bcrypt = require('bcryptjs');
 const JWT= require('jsonwebtoken');
 const {JWT_SECRET}=require('../config');
 
+const protectedResource=require('../middleware/protectedResource');
+
 
 router.get("/",(req,res)=>{
     res.send("Welcome to ISTA BLOG !");
 
 });
+
+router.get("/secured",protectedResource,(req,res)=>{
+    res.send("Welcome to secured area !");
+
+});
+
 
 router.post('/login', (req,res)=>{
     const {email,password}= req.body;
