@@ -6,10 +6,7 @@ const PORT=4000;
 
 const {MONGODB_URI} = require('./config');
 
-require('./models/user_model');
 
-app.use(express.json());
-app.use(require('./routes/authentication'));
 
 mongoose.connect(MONGODB_URI);
 
@@ -20,11 +17,18 @@ mongoose.connection.on('error', (error)=> {
     console.log("Some error",error);
 });
 
+require('./models/user_model');
+require('./models/post_model');
 
-app.get('/', ( req,res)=>{
-    res.send("Welcome!");
+app.use(express.json());
+app.use(require('./routes/authentication'));
+app.use(require('./routes/postRoute'));
 
-});
+
+//app.get('/', ( req,res)=>{
+ //   res.send("Welcome!");
+
+//});
 
 app.listen(PORT, ()=> {
     console.log("server Started"); 
