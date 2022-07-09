@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose= require('mongoose');
 const UserModel = mongoose.model('UserModel');
+const bcrypt = require('bcryptjs');
 
 
 router.get("/",(req,res)=>{
@@ -22,7 +23,11 @@ router.post('/register', (req,res)=> {
     if(dbUser){
         return res.status(500).json({error:"User with email already exist"});   
     }
-    const user = new UserModel({ fullName,email,password });
+    bycrypt.hash(password,16)
+    .then((hashedPassword)=>{
+        const user = new UserModel({ fullName,email,password ,hashedPassword});
+    });
+   
     user.save()
     .then((u)=> {
         res.status(201).json({result: "User Registered successfully"});
