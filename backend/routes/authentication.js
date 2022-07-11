@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const JWT= require('jsonwebtoken');
 const {JWT_SECRET}=require('../config');
 
-const protectedResource=require('../middleware/protectedResource');
+const protectedResource = require('../middleware/protectedResource');
 
 
 router.get("/",(req,res)=>{
@@ -31,12 +31,12 @@ router.post('/login', (req,res)=>{
             return res.status(400).json({error:"Invalid credentials!"});  
 
         }
-        bcrypt.compare(password,dbUSer.password)
+        bcrypt.compare(password, dbUser.password)
         .then((didMatch)=> {
             if(didMatch){
                 //return res.status(201).json({error:"User Logged In successfully"});  
                 // creat and send a token
-                const jwtToken = jwt.sign({ _id:dbUser._id}, JWT_SECRET);
+                const jwtToken = JWT.sign({ _id:dbUser._id}, JWT_SECRET);
                 res.json({ token: jwtToken });
 
             } else {
@@ -63,27 +63,24 @@ router.post('/register', (req,res)=> {
   UserModel.findOne({email:email})
   .then((dbUser)=> {
     if(dbUser){
-        return res.status(500).JSON({error:"User with email already exist"});   
+        return res.status(500).json("{error:User with email already exist}");   
     }
-    bycrypt.hash(password,16)
-    .then((hashedPassword)=>{
-         user = new UserModel({ fullName,email,password ,hashedPassword}); user.save()
-         .then((u)=> {
-             res.status(201).json({result: "User Registered successfully"});
-         
-         })
-         .catch((error) => {
-             console.log(error);
-         });
-
+    bcrypt.hash(password, 16)
+    .then((hashedPassword) => {
+        const user = new UserModel({ fullName, email, password: hashedPassword, profilePicUrl: profilePicUrl });
+        user.save()
+            .then((u) => {
+                res.status(201).json({ result: "User Registered successfully" });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     });
-   
-   
-  })
-  .catch((error)=> {
-    console.log(error);
-  });
-    res.json({ result: "Registered successfully" });
+
+    })
+    .catch((error) => {
+   console.log(error);
+    });
 });
 
 module.exports = router;
